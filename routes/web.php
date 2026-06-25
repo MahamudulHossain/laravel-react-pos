@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,7 @@ Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+    Route::resource('category', CategoryController::class);
 });
 
 Route::middleware('auth')->group(function () {
