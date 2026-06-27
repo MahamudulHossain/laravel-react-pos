@@ -15,10 +15,18 @@ class CategoryController extends Controller
     public function index()
     {
         $query = Category::query();
+        if(request("category_name")){
+            $query->where("name", "like", "%".request("category_name")."%");
+        }
+        if(request("status")){
+            $query->where("status", request("status"));
+        }
         $categories = $query->paginate(10)->onEachSide(1);
+
         return inertia('Category/Index', [
             // 'categories' => $categories,
             'categories' => CategoryResource::collection($categories),
+            'queryParams' => request()->query()
         ]);
     }
 

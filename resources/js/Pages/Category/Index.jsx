@@ -1,8 +1,22 @@
 import React from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import Pagination from '@/Components/Pagination'
-const Index = ({ categories }) => {
+import { STATUS_CLASS_MAP, STATUS_LABEL_MAP } from '@/Constants'
+import TextInput from '@/Components/TextInput'
+import SelectInput from '@/Components/SelectInput'
+const Index = ({ categories, queryParams = null }) => {
+    queryParams = queryParams || {};
+    const searchFeildCLicked = (field,value) => {
+        queryParams[field] = value
+        router.get(route('category.index'), queryParams, { preserveState: true });
+    }
+
+    const keyPress = (field,e) => {
+        if (e.key !== 'Enter') return;
+        searchFeildCLicked(field,e.target.value);
+    }
+
     return (
         <AuthenticatedLayout
             header={
@@ -33,6 +47,39 @@ const Index = ({ categories }) => {
                                             <th scope="col" className="px-6 py-3 font-medium">
                                                 Status
                                             </th>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <thead className="text-md text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+                                                <TextInput
+                                                    type="text"
+                                                    name="category_name"
+                                                    defaultValue={queryParams.category_name}
+                                                    className="mt-1 block w-full"
+                                                    placeholder="Search Category Name"
+                                                    onBlur={e => searchFeildCLicked("category_name",e.target.value)}
+                                                    onKeyPress={e => keyPress("category_name",e)} />
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+                                                <SelectInput name="status" defaultValue={queryParams.status} onChange={e => searchFeildCLicked("status",e.target.value)}>
+                                                    <option value="">Select Status</option>
+                                                    <option value="active">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                </SelectInput>
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 font-medium">
+
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,7 +95,13 @@ const Index = ({ categories }) => {
                                                     {category.slug}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {category.status}
+                                                    <span className={"px-2 py-1 rounded text-white " + STATUS_CLASS_MAP[category.status]}>
+                                                        {STATUS_LABEL_MAP[category.status]}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <Link href="#" className="text-indigo-600 hover:text-indigo-900 mr-3">Edit</Link>
+                                                    <Link href="#" className="text-red-600 hover:text-red-900">Delete</Link>
                                                 </td>
                                             </tr>
                                         ))}
