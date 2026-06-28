@@ -21,6 +21,9 @@ class CategoryController extends Controller
         if(request("status")){
             $query->where("status", request("status"));
         }
+        $filterColumn = request("filterColumn", 'id');
+        $filterDirection = request("filterDirection", 'desc');
+        $query->orderBy($filterColumn, $filterDirection);
         $categories = $query->paginate(10)->onEachSide(1);
 
         return inertia('Category/Index', [

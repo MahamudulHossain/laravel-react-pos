@@ -5,10 +5,17 @@ import Pagination from '@/Components/Pagination'
 import { STATUS_CLASS_MAP, STATUS_LABEL_MAP } from '@/Constants'
 import TextInput from '@/Components/TextInput'
 import SelectInput from '@/Components/SelectInput'
+import { ChevronUpIcon,ChevronDownIcon} from '@heroicons/react/24/solid'
 const Index = ({ categories, queryParams = null }) => {
     queryParams = queryParams || {};
     const searchFeildCLicked = (field,value) => {
         queryParams[field] = value
+        router.get(route('category.index'), queryParams, { preserveState: true });
+    }
+
+    const filterClicked = (field) => {
+        queryParams.filterColumn = field
+        queryParams.filterDirection = queryParams.filterDirection === 'asc' ? 'desc' : 'asc'
         router.get(route('category.index'), queryParams, { preserveState: true });
     }
 
@@ -35,14 +42,44 @@ const Index = ({ categories, queryParams = null }) => {
                                 <table className="w-full text-md text-left text-body">
                                     <thead className="text-md text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                         <tr>
-                                            <th scope="col" className="px-6 py-3 font-medium">
-                                                #
+                                            <th scope="col" className="font-medium cursor-pointer" onClick={(e) =>filterClicked('id')}>
+                                                <div className="px-6 py-3 flex items-center justify-between gap-1">
+                                                    #
+                                                    <div>
+                                                        <ChevronUpIcon
+                                                            className={"w-4 h-4 " + (queryParams.filterColumn === 'id' && queryParams.filterDirection === 'asc' ? 'text-blue-700' : '')}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            className={"w-4 h-4 -mt-1 " + (queryParams.filterColumn === 'id' && queryParams.filterDirection === 'desc' ? 'text-blue-700' : '')}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <th scope="col" className="px-6 py-3 font-medium">
-                                                Category Name
+                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) =>filterClicked('name')}>
+                                                <div className="px-6 py-3 flex items-center justify-between gap-1">
+                                                    Category Name
+                                                    <div>
+                                                        <ChevronUpIcon
+                                                            className={"w-4 h-4 " + (queryParams.filterColumn === 'name' && queryParams.filterDirection === 'asc' ? 'text-blue-700' : '')}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            className={"w-4 h-4 -mt-1 " + (queryParams.filterColumn === 'name' && queryParams.filterDirection === 'desc' ? 'text-blue-700' : '')}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <th scope="col" className="px-6 py-3 font-medium">
-                                                Slug
+                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) =>filterClicked('slug')}>
+                                                <div className="px-6 py-3 flex items-center justify-between gap-1">
+                                                    Slug
+                                                    <div>
+                                                        <ChevronUpIcon
+                                                            className={"w-4 h-4 " + (queryParams.filterColumn === 'slug' && queryParams.filterDirection === 'asc' ? 'text-blue-700' : '')}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            className={"w-4 h-4 -mt-1 " + (queryParams.filterColumn === 'slug' && queryParams.filterDirection === 'desc' ? 'text-blue-700' : '')}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th scope="col" className="px-6 py-3 font-medium">
                                                 Status
