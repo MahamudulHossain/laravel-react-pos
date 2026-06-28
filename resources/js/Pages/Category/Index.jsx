@@ -27,9 +27,12 @@ const Index = ({ categories, queryParams = null }) => {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Product Category List
-                </h2>
+                <div className="flex justify-between">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        Product Category List
+                    </h2>
+                    <button className="btn bg-emerald-400 text-white p-2" onClick={() => router.get(route('category.create'))}>Create</button>
+                </div>
             }
         >
             <Head title="Category" />

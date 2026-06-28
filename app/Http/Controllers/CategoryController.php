@@ -38,7 +38,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Category/Create');
     }
 
     /**
@@ -46,7 +46,14 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        // creating unique slug
+        $slug = str($request->name)->slug();
+        Category::create([
+            'name' => $request->name,
+            'slug' => $slug,
+            'status' => $request->status
+        ]);
+        return redirect(route('category.index'))->with('success', 'Category created successfully');
     }
 
     /**
