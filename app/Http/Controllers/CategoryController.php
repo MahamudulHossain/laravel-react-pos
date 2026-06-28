@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'slug' => $slug,
             'status' => $request->status
         ]);
-        return redirect(route('category.index'))->with('success', 'Category created successfully');
+        return redirect()->route('category.index')->with('success', 'Category created successfully');
     }
 
     /**

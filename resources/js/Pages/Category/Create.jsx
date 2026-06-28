@@ -10,7 +10,6 @@ const Create = () => {
     })
     const submitForm = (e) => {
         e.preventDefault()
-        console.log('Here')
         post(route('category.store'))
     }
 

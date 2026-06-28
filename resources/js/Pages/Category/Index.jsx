@@ -1,14 +1,21 @@
 import React from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head, Link, router } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
 import Pagination from '@/Components/Pagination'
 import { STATUS_CLASS_MAP, STATUS_LABEL_MAP } from '@/Constants'
 import TextInput from '@/Components/TextInput'
 import SelectInput from '@/Components/SelectInput'
-import { ChevronUpIcon,ChevronDownIcon} from '@heroicons/react/24/solid'
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
+import { useEffect, useState } from "react";
+
+
 const Index = ({ categories, queryParams = null }) => {
+    const { flash } = usePage().props;
+    // console.log(usePage());
+    const [flashMessage, setFlashMessage] = useState(false);
+
     queryParams = queryParams || {};
-    const searchFeildCLicked = (field,value) => {
+    const searchFeildCLicked = (field, value) => {
         queryParams[field] = value
         router.get(route('category.index'), queryParams, { preserveState: true });
     }
@@ -19,9 +26,22 @@ const Index = ({ categories, queryParams = null }) => {
         router.get(route('category.index'), queryParams, { preserveState: true });
     }
 
-    const keyPress = (field,e) => {
+    const keyPress = (field, e) => {
         if (e.key !== 'Enter') return;
-        searchFeildCLicked(field,e.target.value);
+        searchFeildCLicked(field, e.target.value);
+    }
+
+    useEffect(() => {
+        if (flash && (flash.success || flash.error)) {
+            setFlashMessage(true);
+            setTimeout(() => {
+                setFlashMessage(false);
+            }, 3000);
+        }
+    }, [flash]);
+    const handleClick = (url) => {
+        if (url)
+            router.visit(url);
     }
 
     return (
@@ -35,17 +55,30 @@ const Index = ({ categories, queryParams = null }) => {
                 </div>
             }
         >
+
             <Head title="Category" />
 
             <div className="py-6">
                 <div className="mx-auto max-w-9xl sm:px-6 lg:px-8">
+                    {/* Flash Messages */}
+                    {flashMessage && flash.success && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 mb-2 rounded relative">
+                            {flash.success}
+                        </div>
+                    )}
+
+                    {flashMessage && flash.error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-2 rounded relative">
+                            {flash.error}
+                        </div>
+                    )}
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
                                 <table className="w-full text-md text-left text-body">
                                     <thead className="text-md text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                         <tr>
-                                            <th scope="col" className="font-medium cursor-pointer" onClick={(e) =>filterClicked('id')}>
+                                            <th scope="col" className="font-medium cursor-pointer" onClick={(e) => filterClicked('id')}>
                                                 <div className="px-6 py-3 flex items-center justify-between gap-1">
                                                     #
                                                     <div>
@@ -58,7 +91,7 @@ const Index = ({ categories, queryParams = null }) => {
                                                     </div>
                                                 </div>
                                             </th>
-                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) =>filterClicked('name')}>
+                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) => filterClicked('name')}>
                                                 <div className="px-6 py-3 flex items-center justify-between gap-1">
                                                     Category Name
                                                     <div>
@@ -71,7 +104,7 @@ const Index = ({ categories, queryParams = null }) => {
                                                     </div>
                                                 </div>
                                             </th>
-                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) =>filterClicked('slug')}>
+                                            <th scope="col" className="px-6 py-3 font-medium cursor-pointer" onClick={(e) => filterClicked('slug')}>
                                                 <div className="px-6 py-3 flex items-center justify-between gap-1">
                                                     Slug
                                                     <div>
@@ -104,14 +137,14 @@ const Index = ({ categories, queryParams = null }) => {
                                                     defaultValue={queryParams.category_name}
                                                     className="mt-1 block w-full"
                                                     placeholder="Search Category Name"
-                                                    onBlur={e => searchFeildCLicked("category_name",e.target.value)}
-                                                    onKeyPress={e => keyPress("category_name",e)} />
+                                                    onBlur={e => searchFeildCLicked("category_name", e.target.value)}
+                                                    onKeyPress={e => keyPress("category_name", e)} />
                                             </th>
                                             <th scope="col" className="px-6 py-3 font-medium">
 
                                             </th>
                                             <th scope="col" className="px-6 py-3 font-medium">
-                                                <SelectInput name="status" defaultValue={queryParams.status} onChange={e => searchFeildCLicked("status",e.target.value)}>
+                                                <SelectInput name="status" defaultValue={queryParams.status} onChange={e => searchFeildCLicked("status", e.target.value)}>
                                                     <option value="">Select Status</option>
                                                     <option value="active">Active</option>
                                                     <option value="inactive">Inactive</option>
@@ -123,10 +156,10 @@ const Index = ({ categories, queryParams = null }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {categories.data.map((category,index) => (
+                                        {categories.data.map((category, index) => (
                                             <tr className="bg-neutral-primary border-b border-default" key={category.id}>
                                                 <th scope="row" className="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                                                    {index+1}
+                                                    {index + 1}
                                                 </th>
                                                 <td className="px-6 py-4">
                                                     {category.name}
