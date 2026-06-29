@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,23 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $query = Product::query();
+        if(request("product_name")){
+            $query->where("name", "like", "%".request("product_name")."%");
+        }
+        if(request("status")){
+            $query->where("status", request("status"));
+        }
+        $filterColumn = request("filterColumn", 'id');
+        $filterDirection = request("filterDirection", 'desc');
+        $query->orderBy($filterColumn, $filterDirection);
+        $products = $query->paginate(10)->onEachSide(1);
+
+        return inertia('Product/Index', [
+            // 'products' => $products,
+            'products' => ProductResource::collection($products),
+            'queryParams' => request()->query()
+        ]);
     }
 
     /**
@@ -41,9 +59,13 @@ class ProductController extends Controller
 
         // image upload
         if ($request->hasFile('image')) {
+            if (!Storage::disk('public')->exists('sign')) {
+                Storage::disk('public')->makeDirectory('products');
+            }
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/products', $imageName);
+            Storage::disk('public')->put('products/' . $imageName, file_get_contents($image));
+
             $data['image'] = $imageName;
         }
         Product::create($data);
