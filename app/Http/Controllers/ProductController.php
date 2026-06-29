@@ -77,9 +77,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->load('category');
+
         $product->image_url = $product->image
                             ? Storage::disk('public')->url('products/' . $product->image)
                             : null;
+                            // dd($product);
         return inertia('Product/Show', [
             'product' => $product
         ]);

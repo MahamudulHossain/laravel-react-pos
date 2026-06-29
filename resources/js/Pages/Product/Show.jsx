@@ -20,13 +20,15 @@ const Show = ({ product }) => {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 flex gap-4">
                             {/* image */}
-                            <div className='flex-1 w-15 h-15'>
+                            <div className='flex-1'>
                                 {product.image_url && <img  src={product.image_url} alt={product.name} />}
                             </div>
                             {/* Details */}
-                            <div className='p-5 bg-slate-300'>
+                            <div className='p-5 bg-slate-300 flex-1'>
                                 <h2 className='text-2xl font-bold'>{product.name}</h2>
                                 <p className='mt-3 text-gray-600'>{product.description}</p>
+                                <p className='text-gray-600 mt-2'><span className='text-zinc-800  uppercase'>Category:</span> <span className='p-1 bg-emerald-50 rounded-md '>{product.category.name}</span>
+                                </p>
                                 <p className='text-gray-600 mt-2'><span className='text-zinc-800  uppercase'>Price:</span> <span className='p-1 bg-emerald-50 rounded-md '>{product.price}</span>
                                 </p>
                                 <p className='text-gray-600 mt-2'><span className='text-zinc-800  uppercase'>Quantity:</span> <span className='p-1 bg-emerald-50 rounded-md '>{product.quantity}</span>
