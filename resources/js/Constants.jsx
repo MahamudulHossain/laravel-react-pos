@@ -3,6 +3,6 @@ export const STATUS_CLASS_MAP = {
   active: "bg-green-500",
 };
 export const STATUS_LABEL_MAP = {
-  inactive: "In Progress",
+  inactive: "Inactive",
   active: "active",
 };

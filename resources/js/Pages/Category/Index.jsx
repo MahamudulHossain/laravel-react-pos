@@ -39,9 +39,15 @@ const Index = ({ categories, queryParams = null }) => {
             }, 3000);
         }
     }, [flash]);
-    const handleClick = (url) => {
-        if (url)
-            router.visit(url);
+
+    const deleteCategory = (id) => {
+        if (confirm('Are you sure you want to delete this category?')) {
+            router.delete(route('category.destroy', id));
+        }
+    }
+
+    const editCategory = (id) => {
+        router.get(route('category.edit', id));
     }
 
     return (
@@ -173,8 +179,16 @@ const Index = ({ categories, queryParams = null }) => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Link href="#" className="text-indigo-600 hover:text-indigo-900 mr-3">Edit</Link>
-                                                    <Link href="#" className="text-red-600 hover:text-red-900">Delete</Link>
+                                                    <button
+                                                        onClick={() => editCategory(category.id)}
+                                                        className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => deleteCategory(category.id)}
+                                                        className="text-red-600 hover:text-red-900">
+                                                        Delete
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}

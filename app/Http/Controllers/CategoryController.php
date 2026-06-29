@@ -69,7 +69,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return inertia('Category/Edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -77,7 +79,14 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        // dd($request->validated());
+        $slug = str($request->name)->slug();
+        $category->update([
+            'name' => $request->name,
+            'slug' => $slug,
+            'status' => $request->status
+        ]);
+        return redirect()->route('category.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -85,6 +94,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully');
     }
 }

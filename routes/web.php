@@ -20,7 +20,7 @@ Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
-    Route::resource('category', CategoryController::class);
+    Route::resource('category', CategoryController::class)->except(['show']);
 });
 
 Route::middleware('auth')->group(function () {
