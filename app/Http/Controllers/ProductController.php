@@ -77,7 +77,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $product->image_url = $product->image
+                            ? Storage::disk('public')->url('products/' . $product->image)
+                            : null;
+        return inertia('Product/Show', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -127,6 +132,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        // delete existing image
+        if ($product->image) {
+            Storage::disk('public')->delete('products/' . $product->image);
+        }
+
+        $product->delete();
+        return redirect()->route('product.index')->with('success', 'Product deleted successfully');
     }
 }

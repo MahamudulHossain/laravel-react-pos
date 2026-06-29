@@ -174,7 +174,9 @@ const Index = ({ products, queryParams = null }) => {
                                                     {index + 1}
                                                 </th>
                                                 <td className="px-6 py-4">
-                                                    {product.name}
+                                                    <Link href={route('product.show', product.id)}>
+                                                        {product.name}
+                                                    </Link>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     {product.category.name}
