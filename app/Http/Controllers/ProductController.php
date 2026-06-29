@@ -59,7 +59,7 @@ class ProductController extends Controller
 
         // image upload
         if ($request->hasFile('image')) {
-            if (!Storage::disk('public')->exists('sign')) {
+            if (!Storage::disk('public')->exists('products')) {
                 Storage::disk('public')->makeDirectory('products');
             }
             $image = $request->file('image');
@@ -85,7 +85,14 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $categories = Category::where('status', 'active')->get();
+        $product->image_url = $product->image
+                            ? Storage::disk('public')->url('products/' . $product->image)
+                            : null;
+        return inertia('Product/Edit', [
+            'product' => $product,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -93,7 +100,26 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        // dd($request->validated());
+        $data = $request->validated();
+        $data['slug'] = str($data['name'])->slug();
+        $data['updated_by'] = auth()->user()->id;
+
+        if($request->hasFile('image')) {
+            // delete old image
+            if ($request->image) {
+                Storage::disk('public')->delete('products/' . $product->image);
+            }
+            // upload new image
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            Storage::disk('public')->put('products/' . $imageName, file_get_contents($image));
+
+            $data['image'] = $imageName;
+        }
+
+        $product->update($data);
+        return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 
     /**
