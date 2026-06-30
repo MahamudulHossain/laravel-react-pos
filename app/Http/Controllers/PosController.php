@@ -13,14 +13,12 @@ class PosController extends Controller
         $categories = Category::where('status', 'active')->get();
         $query = Product::where('quantity', '>', 0);
 
-        if ($request->filled('category') && $request->category !== 'All Categories') {
+        if ($request->filled('category') && $request->category !== 'all_categories') {
             $query->where('category_id', $request->category);
         }
 
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%');
-            });
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         $products = $query->latest()->paginate(10)->withQueryString();
@@ -33,9 +31,10 @@ class PosController extends Controller
                                 ? Storage::disk('public')->url('products/' . $product->image)
                                 : null;
         }
+        // dd($products);
         return inertia('Pos',[
             'categories' => $categories,
-            'dbProducts' => $products,
+            'products' => $products,
             'queryParams' => request()->query()
         ]);
     }

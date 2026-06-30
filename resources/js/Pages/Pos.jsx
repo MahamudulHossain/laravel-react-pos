@@ -1,21 +1,37 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Search, ShoppingBag, Trash2, Plus, Minus, Layers } from 'lucide-react';
 import { router } from '@inertiajs/react';
+import useDebounce from '@/Hooks/useDebounce';
 
-export default function Pos({categories, dbProducts, queryParams = null}) {
+export default function Pos({ categories, products, queryParams = null }) {
     queryParams = queryParams || {};
-    const [products] = useState(dbProducts);
-    const [selectedCategory, setSelectedCategory] = useState('All Categories');
-    const [searchQuery, setSearchQuery] = useState('');
     const [cart, setCart] = useState([]);
-// console.log(products);
+    const [search, setSearch] = useState(queryParams.search || "");
+    const debouncedSearch = useDebounce(search, 500);
+    // console.log(products);
 
     // 1. Category Action
     const handleCategoryChange = (category) => {
-        setSelectedCategory(category);
         queryParams.category = category
         router.get(route('pos.index', queryParams, { preserveState: true }));
     };
+
+    // Search Action
+
+    useEffect(() => {
+        router.get(
+            route("pos.index"),
+            {
+                ...queryParams,
+                search: debouncedSearch,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            }
+        );
+    }, [debouncedSearch]);
 
     // 2. Cart Actions
     const addToCart = (product) => {
@@ -73,7 +89,7 @@ export default function Pos({categories, dbProducts, queryParams = null}) {
                             onChange={(e) => handleCategoryChange(e.target.value)}
                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none cursor-pointer"
                         >
-                            <option value="All Categories">All Categories</option>
+                            <option value="all_categories">All Categories</option>
                             {categories.map(cat => (
                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
@@ -85,9 +101,9 @@ export default function Pos({categories, dbProducts, queryParams = null}) {
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Scan barcode or type product name..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Type product name..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                         />
                     </div>
