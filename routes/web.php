@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -23,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
     Route::resource('category', CategoryController::class)->except(['show']);
     Route::resource('product', ProductController::class);
+    Route::get('pos', [PosController::class, 'index'])->name('pos');
 });
 
 Route::middleware('auth')->group(function () {
