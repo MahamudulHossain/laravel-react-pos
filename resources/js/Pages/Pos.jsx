@@ -1,33 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Search, ShoppingBag, Trash2, Plus, Minus, Layers } from 'lucide-react';
 
-// Mock Data (Simulating Inertia props)
-const INITIAL_PRODUCTS = [
-    { id: 1, name: 'Saffron Oud Intense', category: 'Fragrances', price: 120.00, stock: 15, image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&auto=format&fit=crop&q=60' },
-    { id: 2, name: 'Blue De Chanel EDP', category: 'Fragrances', price: 145.00, stock: 8, image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&auto=format&fit=crop&q=60' },
-    { id: 3, name: 'Velvet Vanilla Blend', category: 'Fragrances', price: 95.00, stock: 22, image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&auto=format&fit=crop&q=60' },
-    { id: 4, name: 'Minimalist Leather Wallet', category: 'Accessories', price: 45.00, stock: 5, image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&auto=format&fit=crop&q=60' },
-    { id: 5, name: 'Matte Black Coffee Mug', category: 'Lifestyle', price: 25.00, stock: 0, image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&auto=format&fit=crop&q=60' },
-];
-
-const CATEGORIES = ['All Categories', 'Fragrances', 'Accessories', 'Lifestyle'];
-
-export default function Pos() {
-    // State Management (Cart state can easily be migrated to Redux later)
-    const [products] = useState(INITIAL_PRODUCTS);
+export default function Pos({categories, dbProducts}) {
+    const [products] = useState(dbProducts);
     const [selectedCategory, setSelectedCategory] = useState('All Categories');
     const [searchQuery, setSearchQuery] = useState('');
     const [cart, setCart] = useState([]);
-
-    // 1. Filtered Products Pipeline (Criteria: Stock > 0, Category, Search)
-    const filteredProducts = useMemo(() => {
-        return products.filter(product => {
-            const matchesStock = product.stock > 0;
-            const matchesCategory = selectedCategory === 'All Categories' || product.category === selectedCategory;
-            const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesStock && matchesCategory && matchesSearch;
-        });
-    }, [products, selectedCategory, searchQuery]);
+// console.log(products);
 
     // 2. Cart Actions
     const addToCart = (product) => {
@@ -84,8 +63,9 @@ export default function Pos() {
                             onChange={(e) => setSelectedCategory(e.target.value)}
                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none cursor-pointer"
                         >
-                            {CATEGORIES.map(cat => (
-                                <option key={cat} value={cat}>{cat}</option>
+                            <option value="All Categories">All Categories</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
                         </select>
                     </div>
@@ -105,14 +85,15 @@ export default function Pos() {
 
                 {/* Product Grid Area */}
                 <div className="flex-1 overflow-y-auto pr-1 pb-4">
-                    {filteredProducts.length === 0 ? (
+                    {products.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-64 text-slate-400 bg-white rounded-2xl border border-dashed border-slate-200">
                             <ShoppingBag className="w-12 h-12 mb-2 stroke-1" />
                             <p className="text-sm font-medium">No active products found matching criteria.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {filteredProducts.map((product) => (
+                            {products.data.map((product) => (
+
                                 <div
                                     key={product.id}
                                     onClick={() => addToCart(product)}
@@ -121,7 +102,7 @@ export default function Pos() {
                                     {/* Image Container */}
                                     <div className="aspect-square w-full bg-slate-100 overflow-hidden relative">
                                         <img
-                                            src={product.image}
+                                            src={product.image_url}
                                             alt={product.name}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
@@ -134,6 +115,9 @@ export default function Pos() {
                                     <div className="p-4 flex flex-col flex-1 justify-between">
                                         <h3 className="font-semibold text-slate-800 text-sm line-clamp-2 mb-1 group-hover:text-indigo-600 transition-colors">
                                             {product.name}
+                                        </h3>
+                                        <h3 className="font-semibold text-slate-800 text-sm line-clamp-2 mb-1 group-hover:text-indigo-600 transition-colors">
+                                            {product.category_name}
                                         </h3>
                                         <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-50">
                                             <span className="text-xs text-slate-400 font-medium tracking-wide uppercase">{product.category}</span>
@@ -183,7 +167,7 @@ export default function Pos() {
                     ) : (
                         cart.map((item) => (
                             <div key={item.id} className="flex gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 group">
-                                <img src={item.image} alt={item.name} className="w-14 h-14 object-cover rounded-lg bg-white border border-slate-200" />
+                                <img src={item.image_url} alt={item.name} className="w-14 h-14 object-cover rounded-lg bg-white border border-slate-200" />
                                 <div className="flex-1 flex flex-col justify-between">
                                     <div className="flex items-start justify-between gap-2">
                                         <h4 className="text-xs font-semibold text-slate-800 line-clamp-2">{item.name}</h4>
