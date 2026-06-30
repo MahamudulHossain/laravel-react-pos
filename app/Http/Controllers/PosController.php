@@ -35,7 +35,8 @@ class PosController extends Controller
         }
         return inertia('Pos',[
             'categories' => $categories,
-            'dbProducts' => $products
+            'dbProducts' => $products,
+            'queryParams' => request()->query()
         ]);
     }
 }

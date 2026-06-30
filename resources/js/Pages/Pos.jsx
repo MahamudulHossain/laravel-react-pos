@@ -1,12 +1,21 @@
 import React, { useState, useMemo } from 'react';
 import { Search, ShoppingBag, Trash2, Plus, Minus, Layers } from 'lucide-react';
+import { router } from '@inertiajs/react';
 
-export default function Pos({categories, dbProducts}) {
+export default function Pos({categories, dbProducts, queryParams = null}) {
+    queryParams = queryParams || {};
     const [products] = useState(dbProducts);
     const [selectedCategory, setSelectedCategory] = useState('All Categories');
     const [searchQuery, setSearchQuery] = useState('');
     const [cart, setCart] = useState([]);
 // console.log(products);
+
+    // 1. Category Action
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        queryParams.category = category
+        router.get(route('pos.index', queryParams, { preserveState: true }));
+    };
 
     // 2. Cart Actions
     const addToCart = (product) => {
@@ -59,8 +68,9 @@ export default function Pos({categories, dbProducts}) {
                     <div className="relative flex-shrink-0 min-w-[200px]">
                         <Layers className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <select
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            // value={selectedCategory}
+                            defaultValue={queryParams.category || 'All Categories'}
+                            onChange={(e) => handleCategoryChange(e.target.value)}
                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all appearance-none cursor-pointer"
                         >
                             <option value="All Categories">All Categories</option>
@@ -107,7 +117,7 @@ export default function Pos({categories, dbProducts}) {
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                         <span className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-semibold px-2 py-0.5 rounded-full">
-                                            Stock: {product.stock}
+                                            Stock: {product.quantity}
                                         </span>
                                     </div>
 
