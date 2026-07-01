@@ -39,12 +39,12 @@ export default function Pos({ categories, products, queryParams = null }) {
         setCart(currentCart => {
             const existingItem = currentCart.find(item => item.id === product.id);
             if (existingItem) {
-                if (existingItem.quantity >= product.stock) return currentCart; // Cap at available stock
+                if (existingItem.qunatitySlected >= product.quantity) return currentCart; // Cap at available qunatitySlected
                 return currentCart.map(item =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    item.id === product.id ? { ...item, qunatitySlected: item.qunatitySlected + 1 } : item
                 );
             }
-            return [...currentCart, { ...product, quantity: 1 }];
+            return [...currentCart, { ...product, qunatitySlected: 1 }];
         });
     };
 
@@ -52,10 +52,10 @@ export default function Pos({ categories, products, queryParams = null }) {
         setCart(currentCart =>
             currentCart.map(item => {
                 if (item.id === id) {
-                    const newQty = item.quantity + delta;
+                    const newQty = item.qunatitySlected + delta;
                     if (newQty <= 0) return null;
-                    if (newQty > item.stock) return item; // Cap at stock limit
-                    return { ...item, quantity: newQty };
+                    if (newQty > item.quantity) return item; // Cap at qunatitySlected limit
+                    return { ...item, qunatitySlected: newQty };
                 }
                 return item;
             }).filter(Boolean)
@@ -68,7 +68,7 @@ export default function Pos({ categories, products, queryParams = null }) {
 
     // 3. Calculations
     const cartTotals = useMemo(() => {
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qunatitySlected), 0);
         const tax = subtotal * 0.05; // 5% VAT example
         const total = subtotal + tax;
         return { subtotal, tax, total };
@@ -225,12 +225,12 @@ export default function Pos({ categories, products, queryParams = null }) {
                                                                     <Minus className="w-3 h-3" />
                                                                 </button>
                                                                 <span className="px-2.5 text-xs font-bold text-slate-700 min-w-[24px] text-center">
-                                                                    {item.quantity}
+                                                                    {item.qunatitySlected}
                                                                 </span>
                                                                 <button
                                                                     onClick={() => updateQuantity(item.id, 1)}
                                                                     className="p-1 text-slate-500 hover:bg-slate-50 transition-colors"
-                                                                    disabled={item.quantity >= item.stock}
+                                                                    // disabled={item.quantity >= item.qunatitySlected}
                                                                 >
                                                                     <Plus className="w-3 h-3" />
                                                                 </button>
