@@ -11,7 +11,6 @@ const Edit = ({ categories, product }) => {
         description: product.description,
         price: product.price,
         quantity: product.quantity,
-        image: null,
         status: product.status,
         _method: 'put'
     })

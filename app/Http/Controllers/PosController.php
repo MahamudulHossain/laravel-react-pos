@@ -11,7 +11,7 @@ class PosController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('status', 'active')->get();
-        $query = Product::where('quantity', '>', 0);
+        $query = Product::where('quantity', '>', 0)->where('status', 'active');
 
         if ($request->filled('category') && $request->category !== 'all_categories') {
             $query->where('category_id', $request->category);
