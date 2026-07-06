@@ -13,7 +13,6 @@ export default function Pos({ categories, products, queryParams = null }) {
 
     // Get cart state and actions from store
     const { cart, addItem, updateItemQuantity, removeItem, clearCart, getTotal } = cartStore();
-    // console.log(products);
 
     // 1. Category Action
     const handleCategoryChange = (category) => {
@@ -57,6 +56,7 @@ export default function Pos({ categories, products, queryParams = null }) {
 
     // 3. Calculations
     const cartTotals = getTotal();
+
 
     // 4. Render checkout page
     const handleCheckout = (cartTotals, cart) => {
