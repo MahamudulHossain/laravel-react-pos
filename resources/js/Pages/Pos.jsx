@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Search, ShoppingBag, Trash2, Plus, Minus, Layers } from 'lucide-react';
 import { router, Head } from '@inertiajs/react';
 import useDebounce from '@/Hooks/useDebounce';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { useState } from 'react';
+import cartStore from '@/store/cartStore';
 
 export default function Pos({ categories, products, queryParams = null }) {
     queryParams = queryParams || {};
-    const [cart, setCart] = useState([]);
+    const debouncedSearch = useDebounce(queryParams.search || "", 500);
     const [search, setSearch] = useState(queryParams.search || "");
-    const debouncedSearch = useDebounce(search, 500);
+
+    // Get cart state and actions from store
+    const { cart, addItem, updateItemQuantity, removeItem, clearCart, getTotal } = cartStore();
     // console.log(products);
 
     // 1. Category Action
@@ -40,43 +44,19 @@ export default function Pos({ categories, products, queryParams = null }) {
 
     // 2. Cart Actions
     const addToCart = (product) => {
-        setCart(currentCart => {
-            const existingItem = currentCart.find(item => item.id === product.id);
-            if (existingItem) {
-                if (existingItem.qunatitySelected >= product.quantity) return currentCart; // Cap at available qunatitySelected
-                return currentCart.map(item =>
-                    item.id === product.id ? { ...item, qunatitySelected: item.qunatitySelected + 1 } : item
-                );
-            }
-            return [...currentCart, { ...product, qunatitySelected: 1 }];
-        });
+        addItem(product);
     };
 
     const updateQuantity = (id, delta) => {
-        setCart(currentCart =>
-            currentCart.map(item => {
-                if (item.id === id) {
-                    const newQty = item.qunatitySelected + delta;
-                    if (newQty <= 0) return null;
-                    if (newQty > item.quantity) return item; // Cap at qunatitySelected limit
-                    return { ...item, qunatitySelected: newQty };
-                }
-                return item;
-            }).filter(Boolean)
-        );
+        updateItemQuantity(id,delta);
     };
 
     const removeFromCart = (id) => {
-        setCart(currentCart => currentCart.filter(item => item.id !== id));
+        removeItem(id);
     };
 
     // 3. Calculations
-    const cartTotals = useMemo(() => {
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qunatitySelected), 0);
-        const tax = subtotal * 0.05; // 5% VAT example
-        const total = subtotal + tax;
-        return { subtotal, tax, total };
-    }, [cart]);
+    const cartTotals = getTotal();
 
     // 4. Render checkout page
     const handleCheckout = (cartTotals, cart) => {
@@ -185,12 +165,12 @@ export default function Pos({ categories, products, queryParams = null }) {
                                     </div>
                                     <div>
                                         <h2 className="font-bold text-slate-800">Current Order</h2>
-                                        <p className="text-xs text-slate-400">{cart.reduce((a, b) => a + b.quantity, 0)} items selected</p>
+                                        <p className="text-xs text-slate-400">{cart.reduce((a, b) => a + b.selectedQuantity, 0)} items selected</p>
                                     </div>
                                 </div>
                                 {cart.length > 0 && (
                                     <button
-                                        onClick={() => setCart([])}
+                                        onClick={() => clearCart()}
                                         className="text-xs font-semibold text-rose-500 hover:text-rose-600 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors"
                                     >
                                         Clear All
@@ -233,7 +213,7 @@ export default function Pos({ categories, products, queryParams = null }) {
                                                             <Minus className="w-3 h-3" />
                                                         </button>
                                                         <span className="px-2.5 text-xs font-bold text-slate-700 min-w-[24px] text-center">
-                                                            {item.qunatitySelected}
+                                                            {item.selectedQuantity}
                                                         </span>
                                                         <button
                                                             onClick={() => updateQuantity(item.id, 1)}
