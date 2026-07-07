@@ -58,4 +58,32 @@ class PosController extends Controller
             'cartTotals' => $cartTotals
         ]);
     }
+
+    public function storeOrder(Request $request)
+    {
+        dd($request->all());
+        $request->validate([
+            'cart' => 'required|string',
+            'cartTotals' => 'required|string',
+            'customer_name' => 'required|string|max:255',
+            'customer_phone' => 'nullable|string|max:20',
+            'payment_method' => 'required|string|in:cash,card',
+            'notes' => 'nullable|string'
+        ]);
+
+        $decodedCart = $request->input('cart');
+        $decodedCartTotal = $request->input('cartTotals');
+        $cart = json_decode($decodedCart, true);
+        $cartTotals = json_decode($decodedCartTotal, true);
+
+        // Store the order using cart, totals, and customer info
+        // In a real implementation, you would save to database
+        // For now, return success response
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order placed successfully',
+            'order_id' => time() // simple order ID
+        ]);
+    }
 }

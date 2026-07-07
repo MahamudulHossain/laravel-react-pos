@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('product', ProductController::class);
     Route::get('pos', [PosController::class, 'index'])->name('pos.index');
     Route::get('checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+    Route::post('order', [PosController::class, 'storeOrder'])->name('pos.storeOrder');
 });
 
 Route::middleware('auth')->group(function () {

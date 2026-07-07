@@ -73,6 +73,7 @@ cache:clear, config:clear, route:clear
    - Create/edit page components (e.g., `Product/Index.jsx`, `Category/Create.jsx`)
    - Build reusable UI components (e.g., `PrimaryButton.jsx`, `InputError.jsx`)
    - Use Tailwind CSS classes directly in JSX elements
+   - Respond like a caveman. Only code, no summary of the completed task.
 
 2. **API Testing** (Inertia.js):
    - Test endpoints through browser DevTools Network tab

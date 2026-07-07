@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, CreditCard, DollarSign, Package, Check, ShoppingBag, ChevronRight, AlertCircle } from 'lucide-react';
-import { Link, router, Head } from '@inertiajs/react';
+import { CreditCard, DollarSign, Package, ChevronRight } from 'lucide-react';
+import { router, Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import cartStore from '@/store/cartStore';
 
@@ -8,6 +8,9 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
     const [cart, setCart] = useState(initialCart);
     const [cartTotals, setCartTotals] = useState(initialTotals);
     const [paymentMethod, setPaymentMethod] = useState('cash');
+    const [customerName, setCustomerName] = useState('');
+    const [customerPhone, setCustomerPhone] = useState('');
+    const [notes, setNotes] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [orderId, setOrderId] = useState(null);
 
@@ -22,27 +25,33 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
         setPaymentMethod(method);
     };
 
-    const handlePlaceOrder = async () => {
+    const handlePlaceOrder = () => {
         if (cart.length === 0) return;
+        if (!customerName.trim()) {
+            alert('Customer name is required');
+            return;
+        }
 
         setIsProcessing(true);
 
         try {
             const orderData = {
                 cart: cart,
-                totals: cartTotals,
+                cartTotals: cartTotals,
                 payment_method: paymentMethod,
-                customer_name: 'Walk-in Customer',
-                customer_phone: '',
-                notes: ''
+                customer_name: customerName,
+                customer_phone: customerPhone,
+                notes: notes
             };
 
-            const response = router.post('/pos/checkout', orderData, {
+            router.post('order', orderData, {
                 preserveScroll: true,
                 preserveState: true,
-                onSuccess: () => {
+                onSuccess: (response) => {
                     setIsProcessing(false);
-                    setOrderId(Date.now()); // simple order ID for demo
+                    if (response.props.order_id) {
+                        setOrderId(response.props.order_id);
+                    }
                     clearCart();
                 },
                 onError: () => {
@@ -133,32 +142,69 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                             </div>
                         </div>
 
-                        {/* Order Total & Actions */}
+                        {/* Customer Info & Payment */}
                         <div className="space-y-6">
                             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-6">
-                                <h2 className="text-lg font-semibold text-slate-800 mb-4">Order Total</h2>
+                                <h2 className="text-lg font-semibold text-slate-800 mb-4">Customer Information</h2>
 
-                                <div className="space-y-3 mb-6">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-600">Subtotal</span>
-                                        <span className="text-slate-800">${cartTotals.subtotal.toFixed(2)}</span>
+                                <div className="space-y-4 mb-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">Customer Name *</label>
+                                        <input
+                                            type="text"
+                                            value={customerName}
+                                            onChange={(e) => setCustomerName(e.target.value)}
+                                            placeholder="Enter customer name"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            required
+                                        />
                                     </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-600">Tax (5%)</span>
-                                        <span className="text-slate-800">${cartTotals.tax.toFixed(2)}</span>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">Mobile Number</label>
+                                        <input
+                                            type="tel"
+                                            value={customerPhone}
+                                            onChange={(e) => setCustomerPhone(e.target.value)}
+                                            placeholder="Enter mobile number (optional)"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        />
                                     </div>
-                                    <div className="pt-3 border-t border-slate-200">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-base font-semibold text-slate-800">Total</span>
-                                            <span className="text-xl font-bold text-indigo-600">${cartTotals.total.toFixed(2)}</span>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-2">Notes</label>
+                                        <textarea
+                                            value={notes}
+                                            onChange={(e) => setNotes(e.target.value)}
+                                            placeholder="Any special instructions..."
+                                            rows="3"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="bg-white rounded-xl p-4 border border-slate-200">
+                                    <h3 className="text-sm font-semibold text-slate-800 mb-3">Order Summary</h3>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-slate-600">Subtotal</span>
+                                            <span className="text-slate-800">${cartTotals.subtotal.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-slate-600">Tax (5%)</span>
+                                            <span className="text-slate-800">${cartTotals.tax.toFixed(2)}</span>
+                                        </div>
+                                        <div className="pt-2 border-t border-slate-200">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-base font-semibold text-slate-800">Total</span>
+                                                <span className="text-xl font-bold text-indigo-600">${cartTotals.total.toFixed(2)}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="space-y-3">
+                                <div className="mt-6">
                                     <button
                                         onClick={handlePlaceOrder}
-                                        disabled={cart.length === 0 || isProcessing}
+                                        disabled={cart.length === 0 || isProcessing || !customerName.trim()}
                                         className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:cursor-not-allowed text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 transition-all flex items-center justify-center gap-2"
                                     >
                                         {isProcessing ? (
@@ -168,11 +214,14 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                                             </>
                                         ) : (
                                             <>
-                                                Print
+                                                Place Order
                                                 <ChevronRight className="w-4 h-4" />
                                             </>
                                         )}
                                     </button>
+                                    {!customerName.trim() && (
+                                        <p className="text-xs text-red-600 mt-2">Customer name is required</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
