@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('category', CategoryController::class)->except(['show']);
     Route::resource('product', ProductController::class);
     Route::get('pos', [PosController::class, 'index'])->name('pos.index');
+    Route::get('checkout', [PosController::class, 'checkout'])->name('pos.checkout');
 });
 
 Route::middleware('auth')->group(function () {

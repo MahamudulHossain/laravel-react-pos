@@ -65,8 +65,14 @@ export default function Pos({ categories, products, queryParams = null }) {
 
     // 4. Render checkout page
     const handleCheckout = (cartTotals, cart) => {
-        console.log(cartTotals, cart);
-        // router.get(route('pos.checkout', cart));
+        router.get(route('pos.checkout'), {
+            cart: JSON.stringify(cart),
+            cartTotals: JSON.stringify(cartTotals)
+        }, {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+        });
     };
 
     return (

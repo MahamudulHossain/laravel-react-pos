@@ -38,4 +38,24 @@ class PosController extends Controller
             'queryParams' => request()->query()
         ]);
     }
+
+    public function checkout(Request $request)
+    {
+        $decodedCart = $request->input('cart');
+        $decodedCartTotal = $request->input('cartTotals');
+
+        // Decode JSON strings from frontend
+        if ($decodedCart && $decodedCartTotal) {
+            $cart = json_decode($decodedCart, true);
+            $cartTotals = json_decode($decodedCartTotal, true);
+        } else {
+            $cart = $request->input('cart', []);
+            $cartTotals = $request->input('cartTotals', []);
+        }
+
+        return inertia('Checkout',[
+            'cart' => $cart,
+            'cartTotals' => $cartTotals
+        ]);
+    }
 }
