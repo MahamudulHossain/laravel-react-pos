@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Search, ShoppingBag, Trash2, Plus, Minus, Layers } from 'lucide-react';
 import { router, Head } from '@inertiajs/react';
 import useDebounce from '@/Hooks/useDebounce';
@@ -12,7 +12,12 @@ export default function Pos({ categories, products, queryParams = null }) {
     const [search, setSearch] = useState(queryParams.search || "");
 
     // Get cart state and actions from store
-    const { cart, addItem, updateItemQuantity, removeItem, clearCart, getTotal } = cartStore();
+    const { cart, addItem, updateItemQuantity, removeItem, clearCart, getTotal, initializeFromStorage } = cartStore();
+
+    // Initialize cart from localStorage on mount
+    useEffect(() => {
+        initializeFromStorage();
+    }, []);
 
     // 1. Category Action
     const handleCategoryChange = (category) => {

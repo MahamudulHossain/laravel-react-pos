@@ -80,6 +80,22 @@ const cartStore = create((set, get) => ({
         });
     },
 
+    // Ensure cart is initialized from localStorage on mount
+    ensureInitialized: () => {
+        const saved = localStorage.getItem('cartState');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                // Persist to Zustand store to ensure consistency
+                const { cart = [], subtotal = 0, tax = 0, total = 0 } = parsed;
+                set({ cart, subtotal, tax, total });
+            } catch (e) {
+                console.error('Failed to parse cartState from localStorage', e);
+                set({ cart: [] });
+            }
+        }
+    },
+
     // Remove item from cart
     removeItem: (id) => {
         set((state) => {
