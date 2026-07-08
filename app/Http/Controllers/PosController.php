@@ -109,15 +109,8 @@ class PosController extends Controller
 
         return inertia('PrintOrder', [
             'order' => $order,
-            'message' => 'Order placed successfully'
-        ]);
-    }
-
-    public function printOrder(Request $request, Order $order)
-    {
-        dd($request->all());
-        return inertia('PrintOrder', [
-            'order' => $order
+            'orderDetails' => $order->details()->with('product')->get(),
+            'successMsg' => 'Order placed successfully'
         ]);
     }
 }

@@ -12,7 +12,6 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
     const [customerPhone, setCustomerPhone] = useState('');
     const [notes, setNotes] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
-    const [orderId, setOrderId] = useState(null);
 
     const { clearCart, getTotal } = cartStore();
 
