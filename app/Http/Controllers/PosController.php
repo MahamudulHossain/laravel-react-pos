@@ -3,8 +3,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class PosController extends Controller
 {
@@ -61,29 +64,60 @@ class PosController extends Controller
 
     public function storeOrder(Request $request)
     {
-        dd($request->all());
+    // dd($request->all());
         $request->validate([
-            'cart' => 'required|string',
-            'cartTotals' => 'required|string',
+            'cart' => 'required|array',
+            'cartTotals' => 'required|array',
             'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'nullable|string|max:20',
+            'customer_phone' => 'nullable|string|max:11',
             'payment_method' => 'required|string|in:cash,card',
             'notes' => 'nullable|string'
         ]);
 
         $decodedCart = $request->input('cart');
         $decodedCartTotal = $request->input('cartTotals');
-        $cart = json_decode($decodedCart, true);
-        $cartTotals = json_decode($decodedCartTotal, true);
+        // $cart = json_decode($decodedCart, true);
+        // $cartTotals = json_decode($decodedCartTotal, true);
 
-        // Store the order using cart, totals, and customer info
-        // In a real implementation, you would save to database
-        // For now, return success response
+        $orderData = [
+            'custom_order_id' => 'ORD-' . time(),
+            'customer_name' => $request->customer_name,
+            'customer_phone' => $request->customer_phone,
+            'payment_method' => $request->payment_method,
+            'notes' => $request->notes,
+            'subtotal' => $decodedCartTotal['subtotal'],
+            'tax' => $decodedCartTotal['tax'],
+            'total' => $decodedCartTotal['total']
+        ];
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Order placed successfully',
-            'order_id' => time() // simple order ID
+        // Store both Order and OrderDetails in a transaction
+        $order = DB::transaction(function () use ($orderData, $decodedCart) {
+            // Create the main order record
+            $order = Order::create($orderData);
+
+            // Create order details for each cart item
+            foreach ($decodedCart as $cartItem) {
+                OrderDetails::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem['id'],
+                    'selected_quantity' => $cartItem['selectedQuantity']
+                ]);
+            }
+
+            return $order;
+        });
+
+        return inertia('PrintOrder', [
+            'order' => $order,
+            'message' => 'Order placed successfully'
+        ]);
+    }
+
+    public function printOrder(Request $request, Order $order)
+    {
+        dd($request->all());
+        return inertia('PrintOrder', [
+            'order' => $order
         ]);
     }
 }

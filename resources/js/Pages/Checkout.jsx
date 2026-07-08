@@ -47,12 +47,10 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
             router.post('order', orderData, {
                 preserveScroll: true,
                 preserveState: true,
-                onSuccess: (response) => {
+                onSuccess: () => {
                     setIsProcessing(false);
-                    if (response.props.order_id) {
-                        setOrderId(response.props.order_id);
-                    }
                     clearCart();
+                    // router.visit('/print-order');
                 },
                 onError: () => {
                     setIsProcessing(false);
