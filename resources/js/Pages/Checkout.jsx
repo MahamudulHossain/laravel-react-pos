@@ -125,7 +125,7 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
 
                                     <button
                                         onClick={() => handlePaymentMethod('card')}
-                                        className= {paymentMethod === 'card' ? 'bg-indigo-400 text-white p-3' : 'p-3 bg-white text-black border border-slate-200'}
+                                        className={paymentMethod === 'card' ? 'bg-indigo-400 text-white p-3' : 'p-3 bg-white text-black border border-slate-200'}
                                     >
                                         <div className="flex items-center gap-3">
                                             <CreditCard className="w-5 h-5" />
@@ -164,6 +164,7 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                                             onChange={(e) => setCustomerPhone(e.target.value)}
                                             placeholder="Enter mobile number (optional)"
                                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            required
                                         />
                                     </div>
                                     <div>
@@ -201,7 +202,7 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                                 <div className="mt-6">
                                     <button
                                         onClick={handlePlaceOrder}
-                                        disabled={cart.length === 0 || isProcessing || !customerName.trim()}
+                                        disabled={cart.length === 0 || isProcessing || !customerName.trim() || customerPhone === ''}
                                         className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:cursor-not-allowed text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 transition-all flex items-center justify-center gap-2"
                                     >
                                         {isProcessing ? (
@@ -216,8 +217,8 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                                             </>
                                         )}
                                     </button>
-                                    {!customerName.trim() && (
-                                        <p className="text-xs text-red-600 mt-2">Customer name is required</p>
+                                    {(!customerName.trim() || customerPhone === '') && (
+                                        <p className="text-xs text-red-600 mt-2">Customer name and mobile number is required</p>
                                     )}
                                 </div>
                             </div>

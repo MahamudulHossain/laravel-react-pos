@@ -69,7 +69,7 @@ class PosController extends Controller
             'cart' => 'required|array',
             'cartTotals' => 'required|array',
             'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'nullable|string|max:11',
+            'customer_phone' => 'required|string|max:11',
             'payment_method' => 'required|string|in:cash,card',
             'notes' => 'nullable|string'
         ]);

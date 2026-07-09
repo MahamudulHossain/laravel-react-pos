@@ -52,7 +52,7 @@ export default function Pos({ categories, products, queryParams = null }) {
     };
 
     const updateQuantity = (id, delta) => {
-        updateItemQuantity(id,delta);
+        updateItemQuantity(id, delta);
     };
 
     const removeFromCart = (id) => {
@@ -214,7 +214,7 @@ export default function Pos({ categories, products, queryParams = null }) {
                                                     </button>
                                                 </div>
                                                 <div className="flex items-center justify-between mt-1">
-                                                    <span className="text-xs font-bold text-slate-900">${(item.price * item.quantity).toFixed(2)}</span>
+                                                    <span className="text-xs font-bold text-slate-900">${(item.price * item.selectedQuantity).toFixed(2)}</span>
                                                     {/* Stepper controls */}
                                                     <div className="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                                                         <button
