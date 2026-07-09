@@ -113,4 +113,38 @@ class PosController extends Controller
             'successMsg' => 'Order placed successfully'
         ]);
     }
-}
+    public function indexOrders(Request $request)
+    {
+        $query = Order::query();
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        if ($request->filled('customer_name')) {
+            $query->where('customer_name', 'like', '%' . $request->customer_name . '%');
+        }
+
+        if ($request->filled('customer_phone')) {
+            $query->where('customer_phone', 'like', '%' . $request->customer_phone . '%');
+        }
+
+        $orders = $query->latest()->paginate(10)->withQueryString();
+
+        return inertia('Orders', [
+            'orders' => $orders,
+            'queryParams' => request()->query()
+        ]);
+    }
+
+    public function showOrder($id)
+    {
+        $order = Order::with(['details.product'])->findOrFail($id);
+
+        return inertia('OrderDetails', [
+            'order' => $order,
+        ]);
+    }
+
+    }
+

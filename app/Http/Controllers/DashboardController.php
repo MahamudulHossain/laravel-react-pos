@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
         // Sales data for the last 7 days
         $salesData = Order::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            // ->where('created_at', '>=', now()->subDays(360))
+            ->where('created_at', '>=', now()->subDays(90))
             ->groupBy('date')
             ->orderBy('date')
             ->get();

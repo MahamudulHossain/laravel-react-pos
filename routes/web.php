@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('pos', [PosController::class, 'index'])->name('pos.index');
     Route::get('checkout', [PosController::class, 'checkout'])->name('pos.checkout');
     Route::post('order', [PosController::class, 'storeOrder'])->name('pos.storeOrder');
+    Route::get('orders', [PosController::class, 'indexOrders'])->name('pos.indexOrders');
+    Route::get('order/{id}/show', [PosController::class, 'showOrder'])->name('pos.showOrder');
 });
 
 Route::middleware('auth')->group(function () {

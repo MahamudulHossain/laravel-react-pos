@@ -36,8 +36,6 @@ export default function Dashboard({ auth, totalCategories, totalProducts, totalS
                 return itemDate >= new Date(today.setDate(today.getDate() - 30));
             case '90days':
                 return itemDate >= new Date(today.setDate(today.getDate() - 90));
-            case 'all':
-                return true;
             default:
                 return true;
         }
@@ -144,12 +142,6 @@ export default function Dashboard({ auth, totalCategories, totalProducts, totalS
                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${dateRange === '90days' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                                 >
                                     90 Days
-                                </button>
-                                <button
-                                    onClick={() => setDateRange('all')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${dateRange === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-                                >
-                                    All Time
                                 </button>
                             </div>
                         </div>
