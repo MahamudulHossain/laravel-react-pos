@@ -107,6 +107,13 @@ class PosController extends Controller
             return $order;
         });
 
+        // Update the quantity of the products
+        foreach ($decodedCart as $cartItem) {
+            $product = Product::find($cartItem['id']);
+            $product->quantity -= $cartItem['selectedQuantity'];
+            $product->save();
+        }
+
         return inertia('PrintOrder', [
             'order' => $order,
             'orderDetails' => $order->details()->with('product')->get(),
