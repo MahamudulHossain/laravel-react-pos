@@ -137,7 +137,7 @@ const Edit = ({ categories, product }) => {
                                     {errors.status && <span className="text-red-500">{errors.status}</span>}
                                 </div>
                                 <div className='flex justify-end'>
-                                    <button type="submit" className="btn bg-emerald-400 text-white p-2">Create</button>
+                                    <button type="submit" className="btn bg-emerald-400 text-white p-2">Update</button>
                                 </div>
                             </form>
                         </div>
