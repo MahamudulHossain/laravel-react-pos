@@ -94,6 +94,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // Check if category has any products
+        if ($category->products->count() > 0) {
+            return redirect()->route('category.index')->with('error', 'Category has products and hence it cannot be deleted');
+        }
         $category->delete();
         return redirect()->route('category.index')->with('success', 'Category deleted successfully');
     }
