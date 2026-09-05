@@ -19,9 +19,8 @@ export default forwardRef(function TextInput(
     return (
         <textarea
             {...props}
-
             className={
-                'rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring-indigo-100 ' +
+                'rounded-xl border-ink-200 bg-white shadow-sm transition duration-150 focus:border-brand-600 focus:ring-brand-600 ' +
                 className
             }
             ref={localRef}

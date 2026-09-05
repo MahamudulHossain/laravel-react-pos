@@ -28,13 +28,13 @@ const OrderDetails = ({ order }) => {
     const getStatusClass = (status) => {
         switch (status) {
             case 'completed':
-                return 'bg-green-100 text-green-800';
+                return 'bg-brand-50 text-brand-800';
             case 'pending':
-                return 'bg-yellow-100 text-yellow-800';
+                return 'bg-amber-50 text-amber-800';
             case 'cancelled':
-                return 'bg-red-100 text-red-800';
+                return 'bg-red-50 text-red-800';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return 'bg-ink-100 text-ink-800';
         }
     };
 
@@ -62,12 +62,12 @@ const OrderDetails = ({ order }) => {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                <div className="flex items-center justify-between">
+                    <h2 className="page-title">
                         Order Details
                     </h2>
-                    <Link href={route('pos.indexOrders')} className="flex items-center text-indigo-600 hover:text-indigo-900">
-                        <ChevronLeft className="w-4 h-4 mr-1" />
+                    <Link href={route('pos.indexOrders')} className="flex items-center text-sm font-semibold text-brand-700 hover:text-brand-600">
+                        <ChevronLeft className="mr-1 h-4 w-4" />
                         Back to Orders
                     </Link>
                 </div>
@@ -76,11 +76,11 @@ const OrderDetails = ({ order }) => {
 
             <Head title={`Order #${order.custom_order_id}`} />
 
-            <div className="py-6">
+            <div className="py-8">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     {/* Flash Messages */}
                     {flash.success && (
-                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 mb-4 rounded relative">
+                        <div className="flash-success">
                             {flash.success}
                         </div>
                     )}
@@ -88,75 +88,75 @@ const OrderDetails = ({ order }) => {
                     <div className="print:hidden fixed top-4 right-4 flex gap-2">
                         <button
                             onClick={handlePrint}
-                            className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            className="cursor-pointer rounded-xl bg-brand-600 p-2 text-white transition-colors hover:bg-brand-700"
                         >
-                            <Printer className="w-5 h-5" />
+                            <Printer className="h-5 w-5" />
                         </button>
                         <button
                             onClick={handleClose}
-                            className="p-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                            className="cursor-pointer rounded-xl bg-ink-700 p-2 text-white transition-colors hover:bg-ink-800"
                         >
-                            <X className="w-5 h-5" />
+                            <X className="h-5 w-5" />
                         </button>
                     </div>
 
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden print:shadow-none print:rounded-none border-2 border-gray-200 print:border-gray-400">
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 print:bg-gray-800">
-                            <div className="flex justify-between items-start">
+                    <div className="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-card print:rounded-none print:border-ink-400 print:shadow-none">
+                        <div className="bg-ink-900 p-6 text-white print:bg-ink-800">
+                            <div className="flex items-start justify-between">
                                 <div>
-                                    <h1 className="text-3xl font-bold mb-2">Order Details</h1>
-                                    <p className="text-blue-100 text-sm">#{order.custom_order_id}</p>
+                                    <h1 className="mb-2 font-display text-3xl font-bold">Order Details</h1>
+                                    <p className="text-sm text-ink-300">#{order.custom_order_id}</p>
                                 </div>
                                 <div className="text-right">
-                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusClass('completed')}`}>
+                                    <span className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusClass('completed')}`}>
                                         {getStatusLabel('completed')}
                                     </span>
                                 </div>
                             </div>
-                            <div className="mt-4 space-y-1 text-sm text-blue-100">
+                            <div className="mt-4 space-y-1 text-sm text-ink-300">
                                 <p>Date: {formatDate(order.created_at)}</p>
                                 <p>Time: {formatTime(order.created_at)}</p>
                             </div>
                         </div>
 
-                        <div className="p-6 border-b border-gray-200 print:border-gray-400">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-3">Customer Information</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="border-b border-ink-200 p-6 print:border-ink-400">
+                            <h3 className="mb-3 font-display text-lg font-semibold text-ink-800">Customer Information</h3>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm text-gray-600">Customer Name</label>
-                                    <p className="font-medium text-gray-800">{order.customer_name}</p>
+                                    <label className="text-sm text-ink-500">Customer Name</label>
+                                    <p className="font-medium text-ink-800">{order.customer_name}</p>
                                 </div>
                                 {order.customer_phone && (
                                     <div>
-                                        <label className="text-sm text-gray-600">Mobile Number</label>
-                                        <p className="font-medium text-gray-800">{order.customer_phone}</p>
+                                        <label className="text-sm text-ink-500">Mobile Number</label>
+                                        <p className="font-medium text-ink-800">{order.customer_phone}</p>
                                     </div>
                                 )}
                                 <div>
-                                    <label className="text-sm text-gray-600">Payment Method</label>
-                                    <p className="font-medium text-gray-800">
+                                    <label className="text-sm text-ink-500">Payment Method</label>
+                                    <p className="font-medium text-ink-800">
                                         {getPaymentMethodLabel(order.payment_method)}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-6 border-b border-gray-200 print:border-gray-400">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Items</h3>
+                        <div className="border-b border-ink-200 p-6 print:border-ink-400">
+                            <h3 className="mb-4 font-display text-lg font-semibold text-ink-800">Order Items</h3>
                             <div className="space-y-3">
                                 {order.details?.map((item) => (
-                                    <div key={item.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg print:bg-gray-100">
+                                    <div key={item.id} className="flex items-center justify-between rounded-xl bg-ink-50 p-4 print:bg-ink-100">
                                         <div className="flex-1">
-                                            <h4 className="font-semibold text-gray-800">{item.product?.name}</h4>
-                                            <p className="text-sm text-gray-600 mt-1">
+                                            <h4 className="font-semibold text-ink-800">{item.product?.name}</h4>
+                                            <p className="mt-1 text-sm text-ink-500">
                                                 Quantity: {item.selected_quantity}
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="font-bold text-gray-800">
+                                            <p className="font-bold tabular-nums text-ink-800">
                                                 ${(item.selected_quantity * item.product?.price).toFixed(2)}
                                             </p>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm tabular-nums text-ink-500">
                                                 ${item.product?.price.toFixed(2)} each
                                             </p>
                                         </div>
@@ -165,21 +165,21 @@ const OrderDetails = ({ order }) => {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-gray-50 print:bg-gray-100">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">Financial Summary</h3>
+                        <div className="bg-ink-50 p-6 print:bg-ink-100">
+                            <h3 className="mb-4 font-display text-lg font-semibold text-ink-800">Financial Summary</h3>
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Subtotal:</span>
-                                    <span className="font-medium text-gray-800">${order.subtotal.toFixed(2)}</span>
+                                    <span className="text-ink-500">Subtotal:</span>
+                                    <span className="font-medium tabular-nums text-ink-800">${order.subtotal.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Tax (5%):</span>
-                                    <span className="font-medium text-gray-800">${order.tax.toFixed(2)}</span>
+                                    <span className="text-ink-500">Tax (5%):</span>
+                                    <span className="font-medium tabular-nums text-ink-800">${order.tax.toFixed(2)}</span>
                                 </div>
-                                <div className="border-t border-gray-300 pt-2 mt-2">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-base font-bold text-gray-800">Total:</span>
-                                        <span className="text-xl font-bold text-blue-600">
+                                <div className="mt-2 border-t border-ink-200 pt-2">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-base font-bold text-ink-800">Total:</span>
+                                        <span className="text-xl font-bold tabular-nums text-brand-700">
                                             ${order.total.toFixed(2)}
                                         </span>
                                     </div>
@@ -188,19 +188,19 @@ const OrderDetails = ({ order }) => {
                         </div>
 
                         {order.notes && (
-                            <div className="p-6 border-t border-gray-200 print:border-gray-400">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Notes</h3>
-                                <p className="text-sm text-gray-600 italic">
+                            <div className="border-t border-ink-200 p-6 print:border-ink-400">
+                                <h3 className="mb-2 font-display text-lg font-semibold text-ink-800">Notes</h3>
+                                <p className="text-sm italic text-ink-500">
                                     {order.notes}
                                 </p>
                             </div>
                         )}
 
-                        <div className="p-6 bg-blue-50 print:bg-gray-800 text-center print:text-gray-300">
-                            <p className="text-sm text-blue-600 print:text-gray-400">
+                        <div className="bg-brand-50 p-6 text-center print:bg-ink-800 print:text-ink-300">
+                            <p className="text-sm text-brand-700 print:text-ink-400">
                                 Thank you for your business!
                             </p>
-                            <p className="text-xs text-blue-500 mt-1 print:text-gray-500">
+                            <p className="mt-1 text-xs text-brand-600 print:text-ink-500">
                                 Printed on {formatDate(new Date())} at {formatTime(new Date())}
                             </p>
                         </div>

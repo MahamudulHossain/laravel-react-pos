@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply bg-ink-50 text-ink-900 antialiased;
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-brand-600 ring-offset-2 ring-offset-white;
+    }
+}
+
+@layer components {
+    .page-shell {
+        @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .surface-card {
+        @apply overflow-hidden rounded-2xl border border-ink-200/80 bg-white shadow-card;
+    }
+
+    .page-title {
+        @apply font-display text-xl font-semibold tracking-tight text-ink-900;
+    }
+
+    .table-wrap {
+        @apply relative overflow-x-auto rounded-xl border border-ink-200;
+    }
+
+    .data-table {
+        @apply w-full text-left text-sm text-ink-700;
+    }
+
+    .data-table thead {
+        @apply bg-ink-50 text-xs font-semibold uppercase tracking-wider text-ink-500;
+    }
+
+    .data-table th {
+        @apply px-5 py-3 font-semibold;
+    }
+
+    .data-table td {
+        @apply px-5 py-3.5;
+    }
+
+    .data-table tbody tr {
+        @apply border-t border-ink-100 bg-white transition-colors duration-150 hover:bg-ink-50/70;
+    }
+
+    .flash-success {
+        @apply mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800;
+    }
+
+    .flash-error {
+        @apply mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800;
+    }
+
+    .btn-create {
+        @apply inline-flex cursor-pointer items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:ring-offset-2;
+    }
+
+    .link-action {
+        @apply cursor-pointer text-sm font-semibold text-brand-700 transition-colors hover:text-brand-600;
+    }
+
+    .link-danger {
+        @apply cursor-pointer text-sm font-semibold text-red-600 transition-colors hover:text-red-700;
+    }
+
+    .status-pill {
+        @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

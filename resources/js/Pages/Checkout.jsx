@@ -66,72 +66,72 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
     return (
         <AuthenticatedLayout>
             <Head title="Checkout" />
-            <div className="py-6">
+            <div className="py-8">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between mb-6">
-                        <h1 className="text-2xl font-bold text-slate-800">Checkout</h1>
+                    <div className="mb-6 flex items-center justify-between">
+                        <h1 className="font-display text-2xl font-bold text-ink-900">Checkout</h1>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
-                        <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                                <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                                    <Package className="w-5 h-5 text-indigo-600" />
+                        <div className="space-y-6 lg:col-span-2">
+                            <div className="surface-card p-6">
+                                <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-ink-800">
+                                    <Package className="h-5 w-5 text-brand-600" />
                                     Order Summary
                                 </h2>
 
-                                <div className="space-y-3 max-h-80 overflow-y-auto">
+                                <div className="max-h-80 space-y-3 overflow-y-auto">
                                     {cart.map((item) => (
-                                        <div key={item.id} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl">
+                                        <div key={item.id} className="flex items-center gap-4 rounded-xl bg-ink-50 p-3">
                                             <img
                                                 src={item.image_url}
                                                 alt={item.name}
-                                                className="w-14 h-14 object-cover rounded-lg bg-white border border-slate-200"
+                                                className="h-14 w-14 rounded-lg border border-ink-200 bg-white object-cover"
                                             />
                                             <div className="flex-1">
-                                                <h4 className="text-sm font-semibold text-slate-800 mb-1">{item.name}</h4>
-                                                <p className="text-xs text-slate-600">${item.price.toFixed(2)} each</p>
+                                                <h4 className="mb-1 text-sm font-semibold text-ink-800">{item.name}</h4>
+                                                <p className="text-xs text-ink-600">${item.price.toFixed(2)} each</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-sm font-semibold text-slate-800">x{item.selectedQuantity}</p>
-                                                <p className="text-xs text-slate-600">${(item.price * item.selectedQuantity).toFixed(2)}</p>
+                                                <p className="text-sm font-semibold text-ink-800">x{item.selectedQuantity}</p>
+                                                <p className="text-xs tabular-nums text-ink-600">${(item.price * item.selectedQuantity).toFixed(2)}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                                <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                                    <CreditCard className="w-5 h-5 text-indigo-600" />
+                            <div className="surface-card p-6">
+                                <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-ink-800">
+                                    <CreditCard className="h-5 w-5 text-brand-600" />
                                     Payment Method
                                 </h2>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <button
                                         onClick={() => handlePaymentMethod('cash')}
-                                        className={paymentMethod === 'cash' ? 'bg-indigo-400 text-white p-3' : 'p-3 bg-white text-black border border-slate-200'}
+                                        className={paymentMethod === 'cash' ? 'cursor-pointer rounded-xl bg-brand-600 p-3 text-white transition duration-200' : 'cursor-pointer rounded-xl border border-ink-200 bg-white p-3 text-ink-900 transition duration-200 hover:border-brand-200'}
 
                                     >
                                         <div className="flex items-center gap-3">
-                                            <DollarSign className="w-5 h-5" />
+                                            <DollarSign className="h-5 w-5" />
                                             <div className="text-left">
                                                 <h3 className="font-semibold">Cash Payment</h3>
-                                                <p className="text-xs text-slate-600">Pay at checkout</p>
+                                                <p className={`text-xs ${paymentMethod === 'cash' ? 'text-white/80' : 'text-ink-500'}`}>Pay at checkout</p>
                                             </div>
                                         </div>
                                     </button>
 
                                     <button
                                         onClick={() => handlePaymentMethod('card')}
-                                        className={paymentMethod === 'card' ? 'bg-indigo-400 text-white p-3' : 'p-3 bg-white text-black border border-slate-200'}
+                                        className={paymentMethod === 'card' ? 'cursor-pointer rounded-xl bg-brand-600 p-3 text-white transition duration-200' : 'cursor-pointer rounded-xl border border-ink-200 bg-white p-3 text-ink-900 transition duration-200 hover:border-brand-200'}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <CreditCard className="w-5 h-5" />
+                                            <CreditCard className="h-5 w-5" />
                                             <div className="text-left">
                                                 <h3 className="font-semibold">Card Payment</h3>
-                                                <p className="text-xs text-slate-600">Pay with card</p>
+                                                <p className={`text-xs ${paymentMethod === 'card' ? 'text-white/80' : 'text-ink-500'}`}>Pay with card</p>
                                             </div>
                                         </div>
                                     </button>
@@ -141,59 +141,59 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
 
                         {/* Customer Info & Payment */}
                         <div className="space-y-6">
-                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-6">
-                                <h2 className="text-lg font-semibold text-slate-800 mb-4">Customer Information</h2>
+                            <div className="sticky top-6 surface-card p-6">
+                                <h2 className="mb-4 font-display text-lg font-semibold text-ink-800">Customer Information</h2>
 
-                                <div className="space-y-4 mb-6">
+                                <div className="mb-6 space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Customer Name *</label>
+                                        <label className="mb-2 block text-sm font-medium text-ink-700">Customer Name *</label>
                                         <input
                                             type="text"
                                             value={customerName}
                                             onChange={(e) => setCustomerName(e.target.value)}
                                             placeholder="Enter customer name"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="w-full rounded-xl border border-ink-300 px-3 py-2 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600"
                                             required
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Mobile Number</label>
+                                        <label className="mb-2 block text-sm font-medium text-ink-700">Mobile Number</label>
                                         <input
                                             type="tel"
                                             value={customerPhone}
                                             onChange={(e) => setCustomerPhone(e.target.value)}
                                             placeholder="Enter mobile number (optional)"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="w-full rounded-xl border border-ink-300 px-3 py-2 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600"
                                             required
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">Notes</label>
+                                        <label className="mb-2 block text-sm font-medium text-ink-700">Notes</label>
                                         <textarea
                                             value={notes}
                                             onChange={(e) => setNotes(e.target.value)}
                                             placeholder="Any special instructions..."
                                             rows="3"
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="w-full rounded-xl border border-ink-300 px-3 py-2 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="bg-white rounded-xl p-4 border border-slate-200">
-                                    <h3 className="text-sm font-semibold text-slate-800 mb-3">Order Summary</h3>
+                                <div className="rounded-xl border border-ink-200 bg-ink-50 p-4">
+                                    <h3 className="mb-3 text-sm font-semibold text-ink-800">Order Summary</h3>
                                     <div className="space-y-2">
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-slate-600">Subtotal</span>
-                                            <span className="text-slate-800">${cartTotals.subtotal.toFixed(2)}</span>
+                                            <span className="text-ink-600">Subtotal</span>
+                                            <span className="tabular-nums text-ink-800">${cartTotals.subtotal.toFixed(2)}</span>
                                         </div>
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-slate-600">Tax (5%)</span>
-                                            <span className="text-slate-800">${cartTotals.tax.toFixed(2)}</span>
+                                            <span className="text-ink-600">Tax (5%)</span>
+                                            <span className="tabular-nums text-ink-800">${cartTotals.tax.toFixed(2)}</span>
                                         </div>
-                                        <div className="pt-2 border-t border-slate-200">
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-base font-semibold text-slate-800">Total</span>
-                                                <span className="text-xl font-bold text-indigo-600">${cartTotals.total.toFixed(2)}</span>
+                                        <div className="border-t border-ink-200 pt-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-base font-semibold text-ink-800">Total</span>
+                                                <span className="text-xl font-bold tabular-nums text-brand-700">${cartTotals.total.toFixed(2)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -203,22 +203,22 @@ export default function Checkout({ cart: initialCart, cartTotals: initialTotals 
                                     <button
                                         onClick={handlePlaceOrder}
                                         disabled={cart.length === 0 || isProcessing || !customerName.trim() || customerPhone === ''}
-                                        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:cursor-not-allowed text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 transition-all flex items-center justify-center gap-2"
+                                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-3.5 font-semibold text-white shadow-lg shadow-brand-600/10 transition-all hover:bg-brand-700 hover:shadow-brand-600/20 disabled:cursor-not-allowed disabled:bg-ink-200"
                                     >
                                         {isProcessing ? (
                                             <>
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                                                 Processing...
                                             </>
                                         ) : (
                                             <>
                                                 Place Order
-                                                <ChevronRight className="w-4 h-4" />
+                                                <ChevronRight className="h-4 w-4" />
                                             </>
                                         )}
                                     </button>
                                     {(!customerName.trim() || customerPhone === '') && (
-                                        <p className="text-xs text-red-600 mt-2">Customer name and mobile number is required</p>
+                                        <p className="mt-2 text-xs text-red-600">Customer name and mobile number is required</p>
                                     )}
                                 </div>
                             </div>
