@@ -108,7 +108,7 @@ const OrderDetails = ({ order }) => {
                                     <p className="text-sm text-ink-300">#{order.custom_order_id}</p>
                                 </div>
                                 <div className="text-right">
-                                    <span className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusClass('completed')}`}>
+                                    <span className={`rounded-full px-3 py-1 text-sm font-semibold text-ink-800 ${getStatusClass('completed')}`}>
                                         {getStatusLabel('completed')}
                                     </span>
                                 </div>
