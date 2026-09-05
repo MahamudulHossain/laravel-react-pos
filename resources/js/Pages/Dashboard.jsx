@@ -11,6 +11,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import { Layers, Package, TrendingUp, Users } from 'lucide-react';
 
 ChartJS.register(
     CategoryScale,
@@ -48,9 +49,10 @@ export default function Dashboard({ auth, totalCategories, totalProducts, totalS
             {
                 label: 'Sales Count',
                 data: filteredSalesData.map(item => item.count),
-                backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                borderColor: 'rgba(59, 130, 246, 1)',
+                backgroundColor: 'rgba(5, 150, 105, 0.55)',
+                borderColor: 'rgba(5, 150, 105, 1)',
                 borderWidth: 1,
+                borderRadius: 6,
             },
         ],
     };
@@ -85,61 +87,64 @@ export default function Dashboard({ auth, totalCategories, totalProducts, totalS
 
     // Metric cards data
     const metrics = [
-        { title: 'Categories', value: totalCategories, icon: '📦', color: 'bg-blue-50 text-blue-600' },
-        { title: 'Products', value: totalProducts, icon: '💰', color: 'bg-green-50 text-green-600' },
-        { title: 'Sales', value: totalSales, icon: '📊', color: 'bg-purple-50 text-purple-600' },
-        { title: 'Unique Users', value: totalUniqueUsers, icon: '👥', color: 'bg-orange-50 text-orange-600' },
+        { title: 'Categories', value: totalCategories, icon: Layers, color: 'bg-sky-50 text-sky-700' },
+        { title: 'Products', value: totalProducts, icon: Package, color: 'bg-brand-50 text-brand-700' },
+        { title: 'Sales', value: totalSales, icon: TrendingUp, color: 'bg-violet-50 text-violet-700' },
+        { title: 'Unique Users', value: totalUniqueUsers, icon: Users, color: 'bg-amber-50 text-amber-700' },
     ];
 
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                <h2 className="page-title">
                     Dashboard
                 </h2>
             }
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-8">
+                <div className="page-shell">
                     {/* Metric Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        {metrics.map((metric, index) => (
-                            <div key={index} className="bg-white rounded-lg shadow-sm p-6">
+                    <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                        {metrics.map((metric, index) => {
+                            const Icon = metric.icon;
+                            return (
+                            <div key={index} className="surface-card p-5">
                                 <div className="flex items-center">
-                                    <div className={`p-3 rounded-full ${metric.color} mr-4`}>
-                                        <span className="text-xl">{metric.icon}</span>
+                                    <div className={`mr-4 rounded-xl p-3 ${metric.color}`}>
+                                        <Icon className="h-5 w-5" aria-hidden="true" />
                                     </div>
                                     <div>
-                                        <h3 className="text-gray-500 text-sm font-medium">{metric.title}</h3>
-                                        <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
+                                        <h3 className="text-sm font-medium text-ink-500">{metric.title}</h3>
+                                        <p className="font-display text-2xl font-bold text-ink-900">{metric.value}</p>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {/* Date Filter and Graph */}
-                    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-semibold text-gray-900">Sales Visualization</h3>
+                    <div className="surface-card mb-8 p-6">
+                        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <h3 className="font-display text-lg font-semibold text-ink-900">Sales Visualization</h3>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => setDateRange('7days')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${dateRange === '7days' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                    className={`cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-200 ${dateRange === '7days' ? 'bg-brand-600 text-white' : 'bg-ink-100 text-ink-700 hover:bg-ink-200'}`}
                                 >
                                     7 Days
                                 </button>
                                 <button
                                     onClick={() => setDateRange('30days')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${dateRange === '30days' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                    className={`cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-200 ${dateRange === '30days' ? 'bg-brand-600 text-white' : 'bg-ink-100 text-ink-700 hover:bg-ink-200'}`}
                                 >
                                     30 Days
                                 </button>
                                 <button
                                     onClick={() => setDateRange('90days')}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${dateRange === '90days' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                    className={`cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-200 ${dateRange === '90days' ? 'bg-brand-600 text-white' : 'bg-ink-100 text-ink-700 hover:bg-ink-200'}`}
                                 >
                                     90 Days
                                 </button>
@@ -147,42 +152,42 @@ export default function Dashboard({ auth, totalCategories, totalProducts, totalS
                         </div>
 
                         {filteredSalesData.length > 0 ? (
-                            <div className="h-80 flex items-center justify-center w-full">
+                            <div className="flex h-80 w-full items-center justify-center">
                                 <Bar data={chartData} options={chartOptions} />
                             </div>
                         ) : (
-                            <div className="h-80 flex items-center justify-center text-gray-500">
+                            <div className="flex h-80 items-center justify-center text-ink-500">
                                 No sales data available for the selected time period
                             </div>
                         )}
                     </div>
 
                     {/* Top Products Table */}
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-6">Top 5 Best-Selling Products</h3>
+                    <div className="surface-card p-6">
+                        <h3 className="mb-6 font-display text-lg font-semibold text-ink-900">Top 5 Best-Selling Products</h3>
                         {topProducts && topProducts.length > 0 ? (
-                            <div className="overflow-x-auto">
-                                <table className="w-full table-auto">
+                            <div className="table-wrap">
+                                <table className="data-table">
                                     <thead>
-                                        <tr className="bg-gray-50 border-b">
-                                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Product Name</th>
-                                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Category</th>
-                                            <th className="text-right py-3 px-4 font-semibold text-gray-700">Sold Count</th>
+                                        <tr>
+                                            <th className="text-left">Product Name</th>
+                                            <th className="text-left">Category</th>
+                                            <th className="text-right">Sold Count</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {topProducts.map((product, index) => (
-                                            <tr key={index} className="border-b hover:bg-gray-50">
-                                                <td className="py-3 px-4 text-gray-900">{product.name}</td>
-                                                <td className="py-3 px-4 text-gray-600">{product.category_name}</td>
-                                                <td className="py-3 px-4 text-right font-semibold text-gray-900">{product.sold_count}</td>
+                                            <tr key={index}>
+                                                <td className="font-medium text-ink-900">{product.name}</td>
+                                                <td className="text-ink-600">{product.category_name}</td>
+                                                <td className="text-right font-semibold tabular-nums text-ink-900">{product.sold_count}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         ) : (
-                            <div className="text-center py-8 text-gray-500">
+                            <div className="py-8 text-center text-ink-500">
                                 No product sales data available
                             </div>
                         )}

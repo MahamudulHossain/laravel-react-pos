@@ -42,71 +42,71 @@ export default function PrintOrder({ order, orderDetails, successMsg, app_name }
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4">
+        <div className="min-h-screen bg-ink-50 p-4">
             {/* Print Header */}
-            <div className="hidden print:block mb-4">
+            <div className="mb-4 hidden print:block">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-800">{app_name}</h1>
-                    <p className="text-gray-600">Order #{order.custom_order_id}</p>
+                    <h1 className="font-display text-2xl font-bold text-ink-800">{app_name}</h1>
+                    <p className="text-ink-500">Order #{order.custom_order_id}</p>
                 </div>
             </div>
 
             {/* Close Button (non-print) */}
-            <div className="print:hidden fixed top-4 right-4 flex gap-2">
+            <div className="print:hidden fixed right-4 top-4 flex gap-2">
                 <button
                     onClick={handlePrint}
-                    className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="cursor-pointer rounded-xl bg-brand-600 p-2 text-white transition-colors hover:bg-brand-700"
                 >
-                    <Printer className="w-5 h-5" />
+                    <Printer className="h-5 w-5" />
                 </button>
                 <button
                     onClick={handleClose}
-                    className="p-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    className="cursor-pointer rounded-xl bg-ink-700 p-2 text-white transition-colors hover:bg-ink-800"
                 >
-                    <X className="w-5 h-5" />
+                    <X className="h-5 w-5" />
                 </button>
             </div>
 
             {/* Receipt Content */}
             <div
                 ref={printRef}
-                className="max-w-md mx-auto bg-white print:max-w-full print:shadow-none shadow-lg rounded-2xl overflow-hidden print:rounded-none border-2 border-gray-200 print:border-gray-400"
+                className="mx-auto max-w-md overflow-hidden rounded-2xl border-2 border-ink-200 bg-white shadow-card print:max-w-full print:rounded-none print:border-ink-400 print:shadow-none"
             >
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 print:bg-gray-800 print:from-gray-800 print:to-gray-800">
+                <div className="bg-ink-900 p-6 text-white print:bg-ink-800">
                     <div className="text-center">
-                        <h1 className="text-3xl font-bold mb-2">POS Receipt</h1>
-                        <p className="text-blue-100 text-sm">#{order.custom_order_id}</p>
-                        <div className="mt-3 space-y-1 text-xs text-blue-100">
+                        <h1 className="mb-2 font-display text-3xl font-bold">POS Receipt</h1>
+                        <p className="text-sm text-ink-300">#{order.custom_order_id}</p>
+                        <div className="mt-3 space-y-1 text-xs text-ink-300">
                             <p>Date: {formatDate(order.created_at)}</p>
                             <p>Time: {formatTime(order.created_at)}</p>
                         </div>
                     </div>
 
                     {successMsg && (
-                        <div className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg text-center print:bg-green-600">
+                        <div className="mt-4 rounded-xl bg-brand-600 px-4 py-2 text-center text-white">
                             <p className="font-semibold">{successMsg}</p>
                         </div>
                     )}
                 </div>
 
                 {/* Customer Information */}
-                <div className="p-6 border-b border-gray-200 print:border-gray-400">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3 print:text-gray-900">Customer Information</h3>
+                <div className="border-b border-ink-200 p-6 print:border-ink-400">
+                    <h3 className="mb-3 font-display text-lg font-semibold text-ink-800 print:text-ink-900">Customer Information</h3>
                     <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Name:</span>
-                            <span className="font-medium text-gray-800">{order.customer_name}</span>
+                            <span className="text-ink-500">Name:</span>
+                            <span className="font-medium text-ink-800">{order.customer_name}</span>
                         </div>
                         {order.customer_phone && (
                             <div className="flex justify-between">
-                                <span className="text-gray-600">Phone:</span>
-                                <span className="font-medium text-gray-800">{order.customer_phone}</span>
+                                <span className="text-ink-500">Phone:</span>
+                                <span className="font-medium text-ink-800">{order.customer_phone}</span>
                             </div>
                         )}
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Payment:</span>
-                            <span className="font-medium text-gray-800">
+                            <span className="text-ink-500">Payment:</span>
+                            <span className="font-medium text-ink-800">
                                 {getPaymentMethodLabel(order.payment_method)}
                             </span>
                         </div>
@@ -114,24 +114,24 @@ export default function PrintOrder({ order, orderDetails, successMsg, app_name }
                 </div>
 
                 {/* Order Items */}
-                <div className="p-6 border-b border-gray-200 print:border-gray-400">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 print:text-gray-900">Order Items</h3>
+                <div className="border-b border-ink-200 p-6 print:border-ink-400">
+                    <h3 className="mb-4 font-display text-lg font-semibold text-ink-800 print:text-ink-900">Order Items</h3>
                     <div className="space-y-3">
                         {getOrderDetails().map((item) => (
-                            <div key={item.id} className="flex justify-between items-start p-3 bg-gray-50 rounded-lg print:bg-gray-100">
+                            <div key={item.id} className="flex items-start justify-between rounded-xl bg-ink-50 p-3 print:bg-ink-100">
                                 <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-800 text-sm print:text-gray-900">
+                                    <h4 className="text-sm font-semibold text-ink-800 print:text-ink-900">
                                         {item.product.name}
                                     </h4>
-                                    <p className="text-xs text-gray-600 mt-1">
+                                    <p className="mt-1 text-xs text-ink-500">
                                         Qty: {item.selected_quantity}
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-bold text-gray-800">
+                                    <p className="font-bold tabular-nums text-ink-800">
                                         ${(item.selected_quantity * item.product.price).toFixed(2)}
                                     </p>
-                                    <p className="text-xs text-gray-600">
+                                    <p className="text-xs tabular-nums text-ink-500">
                                         ${item.product.price.toFixed(2)} each
                                     </p>
                                 </div>
@@ -141,21 +141,21 @@ export default function PrintOrder({ order, orderDetails, successMsg, app_name }
                 </div>
 
                 {/* Financial Summary */}
-                <div className="p-6 bg-gray-50 print:bg-gray-100">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 print:text-gray-900">Financial Summary</h3>
+                <div className="bg-ink-50 p-6 print:bg-ink-100">
+                    <h3 className="mb-4 font-display text-lg font-semibold text-ink-800 print:text-ink-900">Financial Summary</h3>
                     <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Subtotal:</span>
-                            <span className="font-medium text-gray-800">${order.subtotal.toFixed(2)}</span>
+                            <span className="text-ink-500">Subtotal:</span>
+                            <span className="font-medium tabular-nums text-ink-800">${order.subtotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Tax (5%):</span>
-                            <span className="font-medium text-gray-800">${order.tax.toFixed(2)}</span>
+                            <span className="text-ink-500">Tax (5%):</span>
+                            <span className="font-medium tabular-nums text-ink-800">${order.tax.toFixed(2)}</span>
                         </div>
-                        <div className="border-t border-gray-300 pt-2 mt-2">
-                            <div className="flex justify-between items-center">
-                                <span className="text-base font-bold text-gray-800">Total:</span>
-                                <span className="text-xl font-bold text-blue-600">
+                        <div className="mt-2 border-t border-ink-200 pt-2">
+                            <div className="flex items-center justify-between">
+                                <span className="text-base font-bold text-ink-800">Total:</span>
+                                <span className="text-xl font-bold tabular-nums text-brand-700">
                                     ${order.total.toFixed(2)}
                                 </span>
                             </div>
@@ -165,20 +165,20 @@ export default function PrintOrder({ order, orderDetails, successMsg, app_name }
 
                 {/* Notes */}
                 {order.notes && (
-                    <div className="p-6 border-t border-gray-200 print:border-gray-400">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2 print:text-gray-900">Notes</h3>
-                        <p className="text-sm text-gray-600 italic print:text-gray-700">
+                    <div className="border-t border-ink-200 p-6 print:border-ink-400">
+                        <h3 className="mb-2 font-display text-lg font-semibold text-ink-800 print:text-ink-900">Notes</h3>
+                        <p className="text-sm italic text-ink-500 print:text-ink-700">
                             {order.notes}
                         </p>
                     </div>
                 )}
 
                 {/* Footer */}
-                <div className="p-6 bg-blue-50 print:bg-gray-800 text-center print:text-gray-300">
-                    <p className="text-sm text-blue-600 print:text-gray-400">
+                <div className="bg-brand-50 p-6 text-center print:bg-ink-800 print:text-ink-300">
+                    <p className="text-sm text-brand-700 print:text-ink-400">
                         Thank you for your business!
                     </p>
-                    <p className="text-xs text-blue-500 mt-1 print:text-gray-500">
+                    <p className="mt-1 text-xs text-brand-600 print:text-ink-500">
                         Printed on {formatDate(new Date())} at {formatTime(new Date())}
                     </p>
                 </div>

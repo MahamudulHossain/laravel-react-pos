@@ -1,14 +1,13 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
 const Pagination = ({links}) => {
-    // console.log(links);
   return (
-    <nav className="flex items-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <nav className="mt-4 flex flex-wrap items-center justify-end gap-1 border-t border-ink-100 bg-white px-2 py-3">
         {links.map((link) => (
             <Link
                 key={link.label}
                 href={link.url || ''}
-                className={"text-center mt-4 text-sm text-gray-700 hover:text-gray-900 px-4 " + (!link.url ? "cursor-not-allowed opacity-50 ":" ") + (link.active ? "font-semibold text-indigo-600" : "")}
+                className={"min-w-[2.25rem] rounded-lg px-3 py-1.5 text-center text-sm transition duration-150 " + (!link.url ? "cursor-not-allowed text-ink-300 ":"cursor-pointer text-ink-600 hover:bg-ink-50 hover:text-ink-900 ") + (link.active ? "bg-brand-600 font-semibold text-white hover:bg-brand-600 hover:text-white" : "")}
                 dangerouslySetInnerHTML={{ __html: link.label }}
                 />
         ))}

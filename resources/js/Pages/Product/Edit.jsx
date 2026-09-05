@@ -23,7 +23,7 @@ const Edit = ({ categories, product }) => {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    <h2 className="page-title">
                         Update Product
                     </h2>
                 </div>
@@ -31,55 +31,56 @@ const Edit = ({ categories, product }) => {
         >
             <Head title="Update Product" />
 
-            <div className="py-6">
-                <div className="mx-auto max-w-6xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+            <div className="py-8">
+                <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                    <div className="surface-card">
+                        <div className="p-6 text-ink-900 sm:p-8">
                             <form className="space-y-6" onSubmit={submitForm}>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Image</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Image</label>
                                     <div className="mt-1">
                                         <input type="file" onChange={(e) => setData('image', e.target.files[0])}
+                                            className="block w-full text-sm text-ink-600 file:mr-4 file:cursor-pointer file:rounded-xl file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100"
                                         />
-                                        {errors.image && <span className="text-red-500">{errors.image}</span>}
+                                        {errors.image && <span className="text-sm font-medium text-red-500">{errors.image}</span>}
                                     </div>
                                     {product.image_url && (
-                                        <div className="mt-1">
-                                            <img className='w-15 h-10' src={product.image_url} alt="" />
+                                        <div className="mt-3">
+                                            <img className='h-20 w-28 rounded-xl object-cover' src={product.image_url} alt="" />
                                         </div>
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Name</label>
                                     <div className="mt-1">
                                         <TextInput
                                             type="text"
                                             name="name"
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                            className="block w-full"
                                             value={data.name}
                                             onChange={(e) => setData('name', e.target.value)}
                                         />
-                                        {errors.name && <span className="text-red-500">{errors.name}</span>}
+                                        {errors.name && <span className="text-sm font-medium text-red-500">{errors.name}</span>}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Description</label>
                                     <div className="mt-1">
                                         <TextAreaInput
                                             type="text"
                                             name="description"
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                            className="block w-full"
                                             value={data.description}
                                             onChange={(e) => setData('description', e.target.value)}
                                         ></TextAreaInput>
-                                        {errors.description && <span className="text-red-500">{errors.description}</span>}
+                                        {errors.description && <span className="text-sm font-medium text-red-500">{errors.description}</span>}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Category</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Category</label>
                                     <SelectInput
                                         name="status"
-                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                        className="mt-1 block w-full"
                                         value={data.category_id}
                                         onChange={(e) => setData('category_id', e.target.value)}
                                     >
@@ -90,43 +91,43 @@ const Edit = ({ categories, product }) => {
                                             </option>
                                         ))}
                                     </SelectInput>
-                                    {errors.status && <span className="text-red-500">{errors.status}</span>}
+                                    {errors.status && <span className="text-sm font-medium text-red-500">{errors.status}</span>}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Quantity</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Quantity</label>
                                     <div className="mt-1">
                                         <TextInput
                                             type="number"
                                             min="0.01"
                                             step="0.01"
                                             name="quantity"
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                            className="block w-full"
                                             value={data.quantity}
                                             onChange={(e) => setData('quantity', e.target.value)}
                                         />
-                                        {errors.quantity && <span className="text-red-500">{errors.quantity}</span>}
+                                        {errors.quantity && <span className="text-sm font-medium text-red-500">{errors.quantity}</span>}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Unit Price</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Unit Price</label>
                                     <div className="mt-1">
                                         <TextInput
                                             type="number"
                                             min="0.01"
                                             step="0.01"
                                             name="price"
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                            className="block w-full"
                                             value={data.price}
                                             onChange={(e) => setData('price', e.target.value)}
                                         />
-                                        {errors.price && <span className="text-red-500">{errors.price}</span>}
+                                        {errors.price && <span className="text-sm font-medium text-red-500">{errors.price}</span>}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Status</label>
+                                    <label className="block text-sm font-semibold text-ink-700">Status</label>
                                     <SelectInput
                                         name="status"
-                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+                                        className="mt-1 block w-full"
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value)}
                                     >
@@ -134,10 +135,10 @@ const Edit = ({ categories, product }) => {
                                         <option value="active">Active</option>
                                         <option value="inactive">Inactive</option>
                                     </SelectInput>
-                                    {errors.status && <span className="text-red-500">{errors.status}</span>}
+                                    {errors.status && <span className="text-sm font-medium text-red-500">{errors.status}</span>}
                                 </div>
                                 <div className='flex justify-end'>
-                                    <button type="submit" className="btn bg-emerald-400 text-white p-2">Update</button>
+                                    <button type="submit" className="btn-create">Update</button>
                                 </div>
                             </form>
                         </div>
